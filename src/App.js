@@ -1,30 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import BookService from './services/BookService'
 
-export default class App extends React.Component {
+export default function App() {
 
-  state = {
-    books: []
-  }
-
-  async componentDidMount() {
+  const [ books, setBooks ] = useState([])
+  
+  useEffect(async () => {
     const books = await BookService.getBooks()
 
-    this.setState({ books })
-  }
-
-  render() {
-    return (
-      <div>
-        {
-          this.state.books.map(book => {
-            return (
-              <div key={book.isbn}>{book.name}</div>
-            )
-          })
-        }
-      </div>
-    )
-  }
+    setBooks(books)
+  }, [])
+  
+  return (
+    <div>
+      {
+        books.map(book => {
+          return (
+            <div key={book.isbn}>{book.name}</div>
+          )
+        })
+      }
+    </div>
+  )
 }
